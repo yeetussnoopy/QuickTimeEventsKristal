@@ -1,5 +1,17 @@
 quick time events! for the Deltarune Kristal Engine: https://kristal.cc/
 
+example: 
+
+```lua
+local qt = QuickTimeCircle(324, 167, "confirm", 0.07, 30, false, false, function(self)
+    if self.success then
+        Assets.playSound("bell")
+    else
+        Assets.playSound("error")
+    end
+    self:remove()
+end)
+
 i made this like months back and i forgot how it works so enjoy
 
 put in objects folder 
