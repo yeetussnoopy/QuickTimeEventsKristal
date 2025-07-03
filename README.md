@@ -1,5 +1,9 @@
-quick time events! for the Deltarune Kristal Engine: https://kristal.cc/
+quick time events! for the Deltarune Kristal Engine: https://kristal.cc/ 
+#newly updated with ten trillion new features which include: 
 
+```lua
+QuickTimeCircle:init(x, y, letter, speed, radius, allow_ghost_tapping, remove_on_complete, on_complete)
+```
 example: 
 
 ```lua
