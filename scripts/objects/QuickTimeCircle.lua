@@ -1,12 +1,15 @@
 local QuickTimeCircle, super = Class(Object)
 
-function QuickTimeCircle:init(x, y, letter, speed, radius, allow_ghost_tapping, remove_on_complete, on_complete)
+function QuickTimeCircle:init(x, y, letter, speed, radius, allow_ghost_tapping, remove_on_complete, remove_on_whiff, on_complete, on_whiff)
     self.radius = 30 -- radius for the progress ring
     self.letter = letter
     self.speed = speed or 0.085
     self.on_complete = on_complete or nil
-    self.remove_on_complete = remove_on_complete or false
-    super:init(self, x, y)
+    self.allow_ghost_tapping = allow_ghost_tapping or false
+    self.remove_on_whiff = remove_on_whiff or true
+    self.on_whiff = on_whiff or nil
+    self.remove_on_complete = remove_on_complete or true
+    super.init(self, x, y)
 
 
     self.success = false
@@ -36,6 +39,7 @@ function QuickTimeCircle:init(x, y, letter, speed, radius, allow_ghost_tapping, 
 
     self.huge = 2
 
+
     if allow_ghost_tapping or false then
         self.huge = math.huge
     end
@@ -47,31 +51,42 @@ end
 
 function QuickTimeCircle:update()
     if Input.pressed(self.letter) then
-        --Kristal.Console:log("hi hi hi")
         self.counter = self.counter + 1
+
+        if self.shot:collidesWith(self.collider) and self.shot:collidesWith(self.collider2) and self.counter < self.huge then
+            self.success = true
+        else
+            if self.remove_on_whiff and not self.allow_ghost_tapping then
+                if self.on_whiff then
+                    self.on_whiff(self)
+                end
+                self:remove()
+            end
+        end
     end
 
-    if Input.pressed(self.letter) and self.shot:collidesWith(self.collider) and self.shot:collidesWith(self.collider2) and self.counter < self.huge then
-        --print("hi")
-        self.success = true
-        self.on_complete(self)
+
+
+    if self.shot.scale_x < 0.31 then
+        if self.on_complete then
+            self.on_complete(self)
+        end
+        if self.remove_on_complete then
+            self:remove()
+        end
     end
 
-    if self.shot.scale_x < 0.31 and self.remove_on_complete then
-        self:remove()
-    end
-
-    super:update(self)
+    super.update(self)
 end
 
 function QuickTimeCircle:draw()
-    super:draw(self)
+    super.draw(self)
     love.graphics.push()
     love.graphics.translate(self.width / 2, self.height / 2)
     love.graphics.setColor(1, 1, 1, self.alpha - 0.4)
-    love.graphics.arc("fill", "pie", 0, 0, self.radius, -math.pi / 2, -math.pi / 2 + (math.pi * 2)) 
+    love.graphics.arc("fill", "pie", 0, 0, self.radius, -math.pi / 2, -math.pi / 2 + (math.pi * 2))
     love.graphics.setColor(0, 0, 0, self.alpha)
-    love.graphics.circle("fill", 0, 0, self.inner_radius)                                                           
+    love.graphics.circle("fill", 0, 0, self.inner_radius)
 
     love.graphics.setColor(1, 1, 1, self.alpha)
     love.graphics.setFont(self.font)

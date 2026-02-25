@@ -3,19 +3,26 @@ quick time events! for the Deltarune Kristal Engine: https://kristal.cc/
 # newly updated with ten trillion new features which include: 
 
 ```lua
-QuickTimeCircle:init(x, y, letter, speed, radius, allow_ghost_tapping, remove_on_complete, on_complete)
+function QuickTimeCircle:init(x, y, letter, speed, radius, allow_ghost_tapping, remove_on_complete, remove_on_whiff, on_complete, on_whiff)
+
 ```
 example: 
 
 ```lua
-local qt = QuickTimeCircle(324, 167, "confirm", 0.07, 30, false, false, function(self)
-    if self.success then
-        Assets.playSound("bell")
-    else
-        Assets.playSound("error")
-    end
-    self:remove()
-end)
+ local conf = Utils.random(0.07, 0.10)
+        local qt = QuickTimeCircle(324, 167, "confirm", 0.07, 30, false, true, true, function(self)
+            if self.success then
+                --if you sucessfully clicked it
+                Assets.playSound("bell")
+            else
+                --if you didnt click it at all
+                Assets.playSound("error")
+            end
+            --self:remove()
+        end, function(self)
+            --on missclick early
+            Assets.playSound("awkward")
+        end)
 ```
 put in objects folder 
 
