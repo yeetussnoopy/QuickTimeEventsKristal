@@ -1,7 +1,5 @@
 quick time events! for the Deltarune Kristal Engine: https://kristal.cc/ 
 
-# newly updated with ten trillion new features which include: 
-
 ```lua
 function QuickTimeCircle:init(x, y, letter, speed, radius, allow_ghost_tapping, remove_on_complete, remove_on_whiff, on_complete, on_whiff)
 
@@ -24,7 +22,7 @@ example:
             Assets.playSound("awkward")
         end)
 ```
-put in objects folder 
+spell example in files
 
 Click the image below to see how it works (or use the video link): https://www.youtube.com/watch?app=desktop&v=54-AKUCFBw0
 
